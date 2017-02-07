@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans     
+        				http://www.springframework.org/schema/beans/spring-beans.xsd
+         				http://www.springframework.org/schema/mvc
+        				http://www.springframework.org/schema/mvc/spring-mvc.xsd
+         				http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop.xsd
+        				http://www.springframework.org/schema/context 
+        				http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<aop:aspectj-autoproxy />
+    <!-- Annotation to work -->	
+<!-- 	<context:annotation-config />
+	
+	<context:component-scan base-package="com.spring.aop" /> -->
+	
+	<bean name="circle" class="com.spring.aop.model.Circle">
+		<property name="name" value="Circle Name" />
+	</bean>
+	
+	<bean name="triangle" class="com.spring.aop.model.Triangle">
+		<property name="name" value="Triangle Name" />
+	</bean>
+	
+	<bean name="shapeService" class="com.spring.aop.service.ShapeService" autowire="byName" />
+	
+	<!-- AOP using Annotation -->
+ 	<!--  <bean name="loggingAspect" class="com.spring.aop.aspect.LoggingAspect" /> -->
+ 	
+ 	<!-- AOP using XML Config -->
+ 	<bean name="loggingAspectXML" class="com.spring.aop.aspect.LoggingAspectXML" />
+ 	
+ 	<!-- <aop:config>
+ 		<aop:aspect id="loggingAspectXML" ref="loggingAspectXML">
+ 			<aop:pointcut expression="execution(* get*())" id="allGetters"/>
+ 			<aop:around method="myAdviceAround" pointcut-ref="allGetters"/>
+ 		</aop:aspect>
+ 	</aop:config> -->
+ 	
+ 	<!-- Inline point cut -->
+ 	<aop:config>
+ 		<aop:aspect id="loggingAspectXML" ref="loggingAspectXML">
+ 			<aop:around pointcut="execution(* get*())" method="myAdviceAround" />
+ 		</aop:aspect>
+ 	</aop:config>
+ 	
+</beans>
