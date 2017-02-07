@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC ".//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="triangle" class="com.spring.basic.Triangle">
+		<!--  <property name="type" value="Equilateral" /> -->
+		<!--  <constructor-arg value="Isoscales" /> -->
+		<!--  <constructor-arg type="int" value="20" />  -->
+		<constructor-arg index="0" value="Scalene"/>
+		<constructor-arg index="1" value="25"/>
+	</bean>
+	
+	<bean id="triangleDI" class="com.spring.basic.TriangleDI" name="triangle-name">
+		<property name="pointA" ref="pointA" />
+		<property name="pointB" ref="pointB" />
+		<property name="pointC" ref="pointC" />
+	</bean> 
+	
+	
+	<bean id="pointA" class="com.spring.basic.Point">
+		<property name="x" value="${pointA.pointX}" />
+		<property name="y" value="${pointA.pointY}" />
+	</bean>
+	 
+	<bean id="pointB" class="com.spring.basic.Point">
+		<property name="x" value="-20" />
+		<property name="y" value="0" />
+	</bean>
+	
+	<bean id="pointC" class="com.spring.basic.Point">
+		<property name="x" value="0" />
+		<property name="y" value="20" />
+	</bean>
+	
+	<!-- Inner Beans -->
+	<!-- 
+	<bean id="triangleDI" class="com.spring.basic.TriangleDI" name="triangle-name">
+		<property name="pointA" ref="zeroPoint" />
+		<property name="pointB">
+			<bean class="com.spring.basic.Point">
+				<property name="x" value="-20" />
+				<property name="y" value="0" />
+			</bean>
+		</property>
+		<property name="pointC">
+			<bean class="com.spring.basic.Point">
+				<property name="x" value="0" />
+				<property name="y" value="20" />
+			</bean>
+		</property>
+	</bean>
+	-->
+	<alias name="triangleDI" alias="triangle-alias"/>
+	
+	<!-- Collection Example -->
+	
+	<bean id="triangleCol" class="com.spring.basic.TriangleCol">
+		<property name="points">
+			<list>
+				<ref bean="pointA" />
+				<ref bean="pointB" />
+				<ref bean="pointC" />
+			</list>
+		</property>
+	</bean> 
+	
+	<!--  Autowire By Name -->
+	<bean id="triangleAutoWireByName" class="com.spring.basic.TriangleAutoWireByName" autowire="byName">
+	</bean>
+	
+	<!--  Application Context -->
+	<bean id="triangleAppContext" class="com.spring.basic.TriangleAppContext">
+	</bean>
+	
+	<!-- Bean Inheritence -->
+	<bean id="parenttriangle" class="com.spring.basic.TriangleDI" abstract="true">
+		<property name="pointA" ref="pointA" />
+	</bean> 
+	
+	<bean id="triangle1" class="com.spring.basic.TriangleDI" parent="parenttriangle">
+		<property name="pointB" ref="pointB" />
+		<property name="pointC" ref="pointC" />
+	</bean> 
+	
+	<bean id="triangle2" class="com.spring.basic.TriangleDI" parent="parenttriangle">
+		<property name="pointB" ref="pointB" />
+	</bean> 
+	
+		<!-- Collection Example Using Inheritance -->
+	
+	<bean id="parenttriangleCol" class="com.spring.basic.TriangleColUsingInheritence">
+		<property name="points">
+			<list>
+				<ref bean="pointA" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="childtriangleCol" class="com.spring.basic.TriangleColUsingInheritence" parent="parenttriangleCol">
+		<property name="points">
+			<list merge="true">
+				<ref bean="pointB" />
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Bean Life cycle -->
+	<bean id="triangleBeanLifeCycleInterface" class="com.spring.basic.TriangleBeanLifeCycleInterface" init-method="myInit" destroy-method="myDestroy">
+	</bean>
+	
+	<!-- Bean Post Processor -->
+	<!-- <bean class="com.spring.basic.DisplayNameBeanPostProcessor" /> -->
+	
+	<!-- Bean Factory Post Processor -->
+	<!-- <bean class="com.spring.basic.MyBeanFactoryPostProcessor" /> -->
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="pointsconfig.properties"/>
+	</bean>
+</beans>
